@@ -1,0 +1,92 @@
+// Subsystem components
+class DVDPlayer {
+    void on() {
+        System.out.println("DVD Player is ON");
+    }
+
+    void play(String movie) {
+        System.out.println("Playing movie: " + movie);
+    }
+
+    void off() {
+        System.out.println("DVD Player is OFF");
+    }
+}
+
+class Projector {
+    void on() {
+        System.out.println("Projector is ON");
+    }
+
+    void setInput(String input) {
+        System.out.println("Setting projector input to: " + input);
+    }
+
+    void off() {
+        System.out.println("Projector is OFF");
+    }
+}
+
+class SoundSystem {
+    void on() {
+        System.out.println("Sound System is ON");
+    }
+
+    void setVolume(int volume) {
+        System.out.println("Setting volume to: " + volume);
+    }
+
+    void off() {
+        System.out.println("Sound System is OFF");
+    }
+}
+
+// Facade for Home Theater
+class HomeTheaterFacade {
+    private DVDPlayer dvdPlayer;
+    private Projector projector;
+    private SoundSystem soundSystem;
+
+    public HomeTheaterFacade(DVDPlayer dvdPlayer, Projector projector, SoundSystem soundSystem) {
+        this.dvdPlayer = dvdPlayer;
+        this.projector = projector;
+        this.soundSystem = soundSystem;
+    }
+
+    public void watchMovie(String movie) {
+        System.out.println("Get ready to watch a movie...");
+
+        dvdPlayer.on();
+        projector.on();
+        projector.setInput("DVD");
+        soundSystem.on();
+        soundSystem.setVolume(10);
+
+        dvdPlayer.play(movie);
+    }
+
+    public void endMovie() {
+        System.out.println("Shutting down the home theater...");
+
+        dvdPlayer.off();
+        projector.off();
+        soundSystem.off();
+    }
+}
+
+// Client code
+public class Main {
+    public static void main(String[] args) {
+        DVDPlayer dvdPlayer = new DVDPlayer();
+        Projector projector = new Projector();
+        SoundSystem soundSystem = new SoundSystem();
+
+        HomeTheaterFacade homeTheater = new HomeTheaterFacade(dvdPlayer, projector, soundSystem);
+
+        // Watch a movie using the facade
+        homeTheater.watchMovie("Inception");
+
+        // End the movie using the facade
+        homeTheater.endMovie();
+    }
+}

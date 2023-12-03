@@ -1,0 +1,91 @@
+public interface GeometricShape {
+
+void draw();
+}
+public class Line implements GeometricShape {
+@Override
+public void draw() {
+System.out.println(&quot;Line Drawn.&quot;);
+}
+}
+public class Circle implements GeometricShape {
+@Override
+public void draw() {
+System.out.println(&quot;Circle is drawn.&quot;);
+}
+}
+public class Sphere implements GeometricShape {
+@Override
+public void draw() {
+System.out.println(&quot;Sphere drawn.&quot;);
+}
+}
+public enum FactoryType {
+TWO_D_SHAPE_FACTORY,
+THREE_D_SHAPE_FACTORY
+}
+public enum ShapeType {
+LINE,
+CIRCLE,
+SPHERE
+}
+public abstract class AbstractFactory {
+abstract GeometricShape getShape(ShapeType name);
+}
+public class TwoDShapeFactory extends AbstractFactory {
+@Override
+GeometricShape getShape(ShapeType name) {
+if (ShapeType.LINE == name) {
+return new Line();
+} else if (ShapeType.CIRCLE == name) {
+return new Circle();
+}
+
+return null;
+}
+}
+public class ThreeDShapeFactory extends AbstractFactory {
+@Override
+GeometricShape getShape(ShapeType name) {
+if (ShapeType.SPHERE == name) {
+return new Sphere();
+}
+return null;
+}
+}
+public class FactoryProvider {
+public static AbstractFactory getFactory(FactoryType factoryType) {
+if (FactoryType.TWO_D_SHAPE_FACTORY == factoryType) {
+return new TwoDShapeFactory();
+} else if (FactoryType.THREE_D_SHAPE_FACTORY == factoryType) {
+return new ThreeDShapeFactory();
+}
+return null;
+}
+}
+public class Application {
+public static void main(String[] args) {
+AbstractFactory factory = FactoryProvider.getFactory(TWO_D_SHAPE_FACTORY);
+if (factory == null) {
+System.out.println(&quot;Factory for given name doesn&#39;t exist.&quot;);
+System.exit(1);
+}
+GeometricShape shape = factory.getShape(ShapeType.LINE);
+if (shape != null) {
+shape.draw();
+} else {
+System.out.println(&quot;Shape with given name doesn&#39;t exist.&quot;);}
+factory = FactoryProvider.getFactory(THREE_D_SHAPE_FACTORY);
+if (factory == null) {
+System.out.println(&quot;Factory for given name doesn&#39;t exist.&quot;);
+System.exit(1);
+}
+shape = factory.getShape(ShapeType.SPHERE);
+
+if (shape != null) {
+shape.draw();
+} else {
+System.out.println(&quot;Shape with given name doesn&#39;t exist.&quot;);
+}
+}
+}

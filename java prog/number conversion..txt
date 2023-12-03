@@ -1,0 +1,98 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Subject interface
+interface Subject {
+    void addObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();
+}
+
+// Observer interface
+interface Observer {
+    void update(int decimalNumber);
+}
+
+// Concrete subject
+class DecimalNumber implements Subject {
+    private int decimalNumber;
+    private List<Observer> observers = new ArrayList<>();
+
+    public void setDecimalNumber(int decimalNumber) {
+        this.decimalNumber = decimalNumber;
+        notifyObservers();
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(decimalNumber);
+        }
+    }
+}
+
+// Concrete observers
+class HexObserver implements Observer {
+    @Override
+    public void update(int decimalNumber) {
+        System.out.println("Hexadecimal: " + Integer.toHexString(decimalNumber));
+    }
+}
+
+class OctalObserver implements Observer {
+    @Override
+    public void update(int decimalNumber) {
+        System.out.println("Octal: " + Integer.toOctalString(decimalNumber));
+    }
+}
+
+class BinaryObserver implements Observer {
+    @Override
+    public void update(int decimalNumber) {
+        System.out.println("Binary: " + Integer.toBinaryString(decimalNumber));
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DecimalNumber decimalNumber = new DecimalNumber();
+        HexObserver hexObserver = new HexObserver();
+        OctalObserver octalObserver = new OctalObserver();
+        BinaryObserver binaryObserver = new BinaryObserver();
+
+        decimalNumber.addObserver(hexObserver);
+        decimalNumber.addObserver(octalObserver);
+        decimalNumber.addObserver(binaryObserver);
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("Enter a decimal number (or type 'exit' to quit): ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("exit")) {
+                break;
+            }
+
+            try {
+                int decimal = Integer.parseInt(input);
+                decimalNumber.setDecimalNumber(decimal);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid decimal number.");
+            }
+        }
+
+        scanner.close();
+    }
+}

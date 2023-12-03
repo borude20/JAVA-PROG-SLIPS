@@ -1,0 +1,164 @@
+GarageCommand.java
+
+package headfirst.command.simpleremote;
+
+public interface Command {
+	public void execute();
+}
+
+-----------------------------------------------
+
+GarageDoor.java
+
+package headfirst.command.simpleremote;
+
+public class GarageDoor {
+
+	public GarageDoor() {
+	}
+
+	public void up() {
+		System.out.println("Garage Door is Open");
+	}
+
+	public void down() {
+		System.out.println("Garage Door is Closed");
+	}
+
+	public void stop() {
+		System.out.println("Garage Door is Stopped");
+	}
+
+	public void lightOn() {
+		System.out.println("Garage light is on");
+	}
+
+	public void lightOff() {
+		System.out.println("Garage light is off");
+	}
+}
+
+----------------------------------------------------------------------------
+
+GarageDoorOpenCommand.java
+
+package headfirst.command.simpleremote;
+
+public class GarageDoorOpenCommand implements Command {
+	GarageDoor garageDoor;
+
+	public GarageDoorOpenCommand(GarageDoor garageDoor) {
+		this.garageDoor = garageDoor;
+	}
+
+	public void execute() {
+		garageDoor.up();
+	}
+}
+
+----------------------------------------------------------------------------
+
+Light.java
+
+package headfirst.command.simpleremote;
+
+public class Light {
+
+	public Light() {
+	}
+
+	public void on() {
+		System.out.println("Light is on");
+	}
+
+	public void off() {
+		System.out.println("Light is off");
+	}
+}
+
+-----------------------------------------------------------------------
+
+LightOffCommand.java
+
+package headfirst.command.simpleremote;
+
+public class Light {
+
+	public Light() {
+	}
+
+	public void on() {
+		System.out.println("Light is on");
+	}
+
+	public void off() {
+		System.out.println("Light is off");
+	}
+}
+
+--------------------------------------------------------------------------
+
+LightOnCommand.java
+
+package headfirst.command.simpleremote;
+
+public class LightOnCommand implements Command {
+	Light light;
+  
+	public LightOnCommand(Light light) {
+		this.light = light;
+	}
+ 
+	public void execute() {
+		light.on();
+	}
+}
+
+------------------------------------------------------------------------
+
+RemoteControlTest.java
+
+package headfirst.command.simpleremote;
+
+public class RemoteControlTest {
+	public static void main(String[] args) {
+		SimpleRemoteControl remote = new SimpleRemoteControl();
+		Light light = new Light();
+		GarageDoor garageDoor = new GarageDoor();
+		LightOnCommand lightOn = new LightOnCommand(light);
+		GarageDoorOpenCommand garageOpen = 
+		    new GarageDoorOpenCommand(garageDoor);
+ 
+		remote.setCommand(lightOn);
+		remote.buttonWasPressed();
+		remote.setCommand(garageOpen);
+		remote.buttonWasPressed();
+    }
+}
+
+------------------------------------------------------------------------
+
+SimpleRemoteControl.java
+
+package headfirst.command.simpleremote;
+
+import java.util.*;
+
+//
+// This is the invoker
+//
+public class SimpleRemoteControl {
+	Command slot;
+ 
+	public SimpleRemoteControl() {}
+ 
+	public void setCommand(Command command) {
+		slot = command;
+	}
+ 
+	public void buttonWasPressed() {
+		slot.execute();
+	}
+}
+
+

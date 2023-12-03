@@ -1,0 +1,48 @@
+Write a Java Program to implement Singleton pattern for
+multithreading
+
+Public class ABC {
+publicstatic ABC obj;
+int i;
+private ABC()
+{
+System.out.println(&quot;Instance Created&quot;);
+}
+Public static synchronized ABC getInstance()
+{
+if(obj == null)
+{
+synchronized (ABC.class) {
+if(obj == null) {
+obj = new ABC();
+}
+}
+}
+Return obj;
+}
+}
+public class SingletoneDemo {
+public static void main(String args[])
+{
+Thread t1 = new Thread(new Runnable()
+
+{
+public void run()
+{
+ABC obj1 = ABC.getInstance();
+}
+});
+
+Thread t2 = new Thread(new Runnable()
+{
+public void run()
+{
+ABC obj2 = ABC.getInstance();
+}
+});
+t1.start();
+t2.start();
+}
+}
+
+

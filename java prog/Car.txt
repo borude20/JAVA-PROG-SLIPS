@@ -1,0 +1,71 @@
+interface Car {
+    void assemble();
+}
+
+class BasicCar implements Car {
+    @Override
+    public void assemble() {
+        System.out.println("Basic car features assembled.");
+    }
+}
+
+abstract class CarDecorator implements Car {
+    protected Car car;
+
+    public CarDecorator(Car car) {
+        this.car = car;
+    }
+
+    @Override
+    public void assemble() {
+        car.assemble();
+    }
+}
+
+class SportsCar extends CarDecorator {
+    public SportsCar(Car car) {
+        super(car);
+    }
+
+    @Override
+    public void assemble() {
+        super.assemble();
+        addSportsCar();
+    }
+
+    private void addSportsCar() {
+        System.out.println("Adding sports car features...");
+    }
+}
+
+class LuxuryCar extends CarDecorator {
+    public LuxuryCar(Car car) {
+        super(car);
+    }
+
+    @Override
+    public void assemble() {
+        super.assemble();
+        addLuxuryCar();
+    }
+
+    private void addLuxuryCar() {
+        System.out.println("Adding luxury car features...");
+    }
+}
+
+public class DecoratorPatternDemo {
+    public static void main(String[] args) {
+        Car basicCar = new BasicCar();
+        System.out.println("Basic car assembled:");
+        basicCar.assemble();
+
+        Car sportsCar = new SportsCar(basicCar);
+        System.out.println("\nSports car assembled:");
+        sportsCar.assemble();
+
+        Car luxuryCar = new LuxuryCar(sportsCar);
+        System.out.println("\nLuxury car assembled:");
+        luxuryCar.assemble();
+    }
+}
